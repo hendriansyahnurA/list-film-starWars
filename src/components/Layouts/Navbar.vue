@@ -2,7 +2,7 @@
   <div id="app" class="p-3">
     <div class="navbar bg-black bg-opacity-80 rounded-xl shadow-xl mb-4">
       <div class="flex-1">
-        <h2 class="text-xl text-yellow-400 font-bold ml-4">Star Wars</h2>
+        <router-link to="/" class="text-xl text-yellow-400 font-bold ml-4">Star Wars</router-link>
       </div>
       <div class="flex-none gap-2">
         <div class="form-control">

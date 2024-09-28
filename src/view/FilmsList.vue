@@ -3,7 +3,7 @@
     <Header />
   </div>
   <h1 class="text-3xl font-bold p-5 underline underline-offset-8">List Film Star Wars</h1>
-  <div class="items-center justify-center py-2">
+  <div class="py-2">
     <span v-if="loading" class="loading loading-spinner loading-lg text-warning"></span>
     <div v-else-if="error" class="text-red-500">Terjadi kesalahan: {{ error.message }}</div>
     <div v-else>

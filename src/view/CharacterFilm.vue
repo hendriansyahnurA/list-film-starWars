@@ -3,7 +3,7 @@
     <h1 class="text-3xl font-bold underline underline-offset-8">List Karakter Star Wars</h1>
     <router-link to="/" class="btn btn-warning hover:underline">Back</router-link>
   </div>
-  <div class="items-center justify-center py-2">
+  <div class="py-2">
     <span v-if="loading" class="loading loading-spinner loading-lg warning"></span>
     <div v-else-if="error" class="text-red-500">Terjadi kesalahan: {{ error.message }}</div>
     <div v-else>
