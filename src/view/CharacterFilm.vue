@@ -6,7 +6,7 @@
     <div v-else>
       <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <li
-          v-for="character in characters"
+          v-for="character in paginatedCharacters"
           :key="character.id"
           class="card bg-white shadow-lg rounded-lg overflow-hidden"
         >
@@ -24,19 +24,22 @@
           </div>
         </li>
       </ul>
+      <Pagination :currentPage="currentPage" :totalPages="totalPages" @page-change="handlePageChange" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, computed } from 'vue';
 import { gql } from '@apollo/client/core';
 import { useQuery } from '@vue/apollo-composable';
 import fetchCharacterImage from '../utils/fetchCharacterImage.ts';
 import router from '../router/index.ts';
+import Pagination from '../components/Pagination/Pagination.vue';
 
 export default defineComponent({
   name: 'CharacterFilm',
+  components: { Pagination },
   setup() {
     const GET_ALL_CHARACTERS = gql`
       query GetAllCharactersWithFilms {
@@ -63,9 +66,15 @@ export default defineComponent({
 
     const { result, loading, error } = useQuery(GET_ALL_CHARACTERS);
     const characters = ref<any[]>([]);
-    const selectedCharacter = ref<any>(null);
-    const isModalVisible = ref(false);
-    const isLoading = ref(true);
+    const charactersPerPage = 6;
+    const currentPage = ref(1);
+
+    const totalPages = computed(() => Math.ceil(characters.value.length / charactersPerPage));
+    const paginatedCharacters = computed(() => {
+      const start = (currentPage.value - 1) * charactersPerPage;
+      const end = start + charactersPerPage;
+      return characters.value.slice(start, end);
+    });
 
     onMounted(async () => {
       if (result.value && result.value.allPeople && result.value.allPeople.people) {
@@ -78,11 +87,12 @@ export default defineComponent({
             };
           })
         );
-        setTimeout(() => {
-          isLoading.value = false;
-        }, 1000);
       }
     });
+
+    const handlePageChange = (page: number) => {
+      currentPage.value = page;
+    };
 
     const gotoCharacterDetail = (characterId: string) => {
       router.push({ path: `/character/${characterId}` });
@@ -90,11 +100,13 @@ export default defineComponent({
 
     return {
       characters,
-      loading: isLoading,
+      paginatedCharacters,
+      currentPage,
+      totalPages,
+      loading,
       error,
       gotoCharacterDetail,
-      selectedCharacter,
-      isModalVisible,
+      handlePageChange,
     };
   },
 });
