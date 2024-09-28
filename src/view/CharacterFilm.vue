@@ -1,29 +1,32 @@
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen">
-    <h1 class="text-3xl font-bold mb-6">Daftar Karakter Star Wars</h1>
-    <span v-if="loading" class="loading loading-spinner loading-lg text-info"></span>
+  <div class="flex justify-between items-center p-5">
+    <h1 class="text-3xl font-bold underline underline-offset-8">List Karakter Star Wars</h1>
+    <router-link to="/" class="btn btn-warning hover:underline">Back</router-link>
+  </div>
+  <div class="items-center justify-center py-2">
+    <span v-if="loading" class="loading loading-spinner loading-lg warning"></span>
     <div v-else-if="error" class="text-red-500">Terjadi kesalahan: {{ error.message }}</div>
     <div v-else>
-      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <li
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div
           v-for="character in paginatedCharacters"
           :key="character.id"
-          class="card bg-white shadow-lg rounded-lg overflow-hidden"
+          class="card bg-gray-900 card-compact shadow-xl min-w-[250px]"
         >
-          <figure class="px-10 pt-10">
-            <img :src="character.imageURL" alt="Character Image" class="w-full h-48 object-cover mb-4 rounded-lg" />
+          <figure>
+            <img :src="character.imageURL" alt="Character Image" class="w-full h-48 object-cover" />
           </figure>
-          <div class="card-body p-6">
+          <div class="card-body h-auto">
             <h3 class="card-title text-xl font-bold">{{ character.name }}</h3>
             <p><strong>Gender:</strong> {{ character.gender }}</p>
             <p><strong>Birth Year:</strong> {{ character.birthYear }}</p>
             <p><strong>Homeworld:</strong> {{ character.homeworld.name }}</p>
-            <div class="card-actions mt-4">
-              <button @click="gotoCharacterDetail(character.id)" class="btn btn-primary">Lihat Film</button>
+            <div class="card-actions">
+              <Button label="Detail" @click="gotoCharacterDetail(character.id)" />
             </div>
           </div>
-        </li>
-      </ul>
+        </div>
+      </div>
       <Pagination :currentPage="currentPage" :totalPages="totalPages" @page-change="handlePageChange" />
     </div>
   </div>
@@ -36,10 +39,10 @@ import { useQuery } from '@vue/apollo-composable';
 import fetchCharacterImage from '../utils/fetchCharacterImage.ts';
 import router from '../router/index.ts';
 import Pagination from '../components/Pagination/Pagination.vue';
-
+import Button from '../components/ButtonComponents/Button.vue';
 export default defineComponent({
   name: 'CharacterFilm',
-  components: { Pagination },
+  components: { Pagination, Button },
   setup() {
     const GET_ALL_CHARACTERS = gql`
       query GetAllCharactersWithFilms {
@@ -66,7 +69,7 @@ export default defineComponent({
 
     const { result, loading, error } = useQuery(GET_ALL_CHARACTERS);
     const characters = ref<any[]>([]);
-    const charactersPerPage = 6;
+    const charactersPerPage = 8;
     const currentPage = ref(1);
 
     const totalPages = computed(() => Math.ceil(characters.value.length / charactersPerPage));

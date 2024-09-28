@@ -14,7 +14,7 @@
           <p>Release Date: {{ filmDetails.releaseDate }}</p>
           <p><strong>Description:</strong> {{ filmDetails.openingCrawl }}</p>
           <div class="card-actions justify-end">
-            <router-link to="/" class="btn btn-primary hover:underline">Kembali</router-link>
+            <router-link to="/" class="btn btn-warning hover:underline">Kembali</router-link>
           </div>
         </div>
       </div>

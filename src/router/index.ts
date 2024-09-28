@@ -3,6 +3,7 @@ import FilmsList from '../view/FilmsList.vue';
 import CharacterFilm from '../view/CharacterFilm.vue';
 import StarWarsData from '../components/details/StarWarsData.vue';
 import CharacterDetails from '../components/details/CharacterDetails.vue';
+import SearchResults from '../components/Search/SearchResults.vue';
 const routes = [
   {
     path: '/',
@@ -23,6 +24,11 @@ const routes = [
     path: '/character/:id',
     component: CharacterDetails,
     props: true,
+  },
+  {
+    path: '/search',
+    name: 'SearchResults',
+    component: SearchResults,
   },
 ];
 

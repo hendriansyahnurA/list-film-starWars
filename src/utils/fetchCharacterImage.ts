@@ -11,18 +11,19 @@ interface TMDBResponse {
 
 export default async function fetchCharacterImage(name: string): Promise<string> {
   try {
-    const queryurl = `${BASE_URL}?api_key=${API_KEY}&query=${encodeURIComponent(name)}`;
-    const response = await fetch(queryurl);
+    const queryUrl = `${BASE_URL}?api_key=${API_KEY}&query=${encodeURIComponent(name)}`;
+    const response = await fetch(queryUrl);
+
     if (!response.ok) {
-      throw new Error('Failed To fetch Image');
+      throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`);
     }
 
     const data: TMDBResponse = await response.json();
+
     if (data && data.results && data.results.length > 0) {
       const profilePath = data.results[0].profile_path;
-      return profilePath
-        ? `https://image.tmdb.org/t/p/w500${data.results[0].profile_path}`
-        : 'https://via.placeholder.com/150';
+
+      return profilePath ? `https://image.tmdb.org/t/p/w500${profilePath}` : 'https://via.placeholder.com/150';
     } else {
       return 'https://via.placeholder.com/150';
     }
