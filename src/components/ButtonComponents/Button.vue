@@ -5,7 +5,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   name: 'Button',
   props: {
     label: {
@@ -13,7 +15,7 @@ export default {
       default: 'Button',
     },
     type: {
-      type: String,
+      type: String as () => 'button' | 'submit' | 'reset',
       default: 'button',
     },
     buttonType: {
@@ -26,5 +28,5 @@ export default {
       this.$emit('click');
     },
   },
-};
+});
 </script>

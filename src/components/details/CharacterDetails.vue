@@ -51,14 +51,36 @@ import { useQuery } from '@vue/apollo-composable';
 import { useRoute } from 'vue-router';
 import fetchCharacterImage from '../../utils/fetchCharacterImage';
 
+interface Film {
+  id: string;
+  title: string;
+  releaseDate: string;
+}
+
+interface Homeworld {
+  name: string;
+}
+
+interface Character {
+  id: string;
+  name: string;
+  gender: string;
+  birthYear: string;
+  homeworld: Homeworld;
+  filmConnection: {
+    films: Film[];
+  };
+  imageURL?: string;
+}
+
 export default defineComponent({
   name: 'CharacterDetails',
   setup() {
     const route = useRoute();
     const characterId = route.params.id;
-    const CharacterDetails = ref(null);
+    const CharacterDetails = ref<Character | null>(null);
     const loading = ref(true);
-    const error = ref(null);
+    const error = ref<Error | null>(null);
 
     const GET_CHARACTER_WITH_FILMS = gql`
       query GetCharacterWithFilms($id: ID!) {
@@ -89,8 +111,6 @@ export default defineComponent({
       id: characterId,
     });
 
-    const isLoading = ref(true);
-
     onMounted(async () => {
       if (!queryLoading.value && result.value) {
         loading.value = false;
@@ -105,14 +125,11 @@ export default defineComponent({
           };
         }
       }
-      setTimeout(() => {
-        isLoading.value = false;
-      }, 1000);
     });
 
     return {
       CharacterDetails,
-      loading: isLoading,
+      loading,
       error,
     };
   },

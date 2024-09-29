@@ -21,6 +21,7 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import { gql } from '@apollo/client/core';
@@ -28,14 +29,23 @@ import { useQuery } from '@vue/apollo-composable';
 import { useRoute } from 'vue-router';
 import fetchFilmImage from '../../utils/fetchFilmImage';
 
+interface Film {
+  id: string;
+  title: string;
+  director: string;
+  releaseDate: string;
+  openingCrawl: string;
+  imageURL?: string; // Tambahkan jika ada
+}
+
 export default defineComponent({
   name: 'StarWarsData',
   setup() {
     const route = useRoute();
     const filmId = route.params.id;
-    const filmDetails = ref(null);
-    const loading = ref(true);
-    const error = ref(null);
+    const filmDetails = ref<Film | null>(null); // Tentukan tipe di sini
+    const loading = ref<boolean>(true);
+    const error = ref<Error | null>(null);
 
     const GET_FILMS = gql`
       query {
@@ -60,7 +70,7 @@ export default defineComponent({
         if (queryError.value) {
           error.value = queryError.value;
         } else {
-          const film = result.value.allFilms.films.find((film) => film.id === filmId);
+          const film: Film | undefined = result.value.allFilms.films.find((film: Film) => film.id === filmId);
           if (film) {
             const imageURL = await fetchFilmImage(film.title);
             filmDetails.value = {
