@@ -54,7 +54,7 @@ export default defineComponent({
       }
     `;
 
-    const { result, loading, error } = useQuery(GET_FILMS);
+    const { result, error } = useQuery(GET_FILMS);
     const films = ref<any[]>([]);
     const isLoading = ref(true);
     const filmPerPage = 4;
