@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center justify-center">
-    <h1 class="text-3xl font-bold mb-6">Star Wars Film Details</h1>
+    <h1 class="text-3xl font-bold mb-6 lg:bg-black">Star Wars Film Details</h1>
     <span v-if="loading" class="loading loading-spinner loading-lg text-info"></span>
     <div v-else-if="error">Terjadi kesalahan: {{ error.message }}</div>
     <div v-else v-if="filmDetails">
@@ -35,7 +35,7 @@ interface Film {
   director: string;
   releaseDate: string;
   openingCrawl: string;
-  imageURL?: string; // Tambahkan jika ada
+  imageURL?: string;
 }
 
 export default defineComponent({

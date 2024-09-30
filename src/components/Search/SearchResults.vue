@@ -20,7 +20,7 @@
           <p>{{ item.birth_year || item.release_date }}</p>
           <p>{{ item.homeworld || item.producer || 'No description available' }}</p>
           <div class="card-actions justify-end">
-            <button class="btn btn-primary">Detail</button>
+            <router-link to="/">Back</router-link>
           </div>
         </div>
       </div>
